@@ -1,4 +1,4 @@
-import IMDB_scrapper as Scraper
+from Scraper import IMDB_scrapper as Scraper
 
 
 def main():
