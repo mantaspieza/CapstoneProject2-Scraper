@@ -1,3 +1,5 @@
+import setuptools
+
 setuptools.setup(
     name="imdb_scrapper",
     version="0.0.1",
