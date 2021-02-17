@@ -20,7 +20,7 @@ setuptools.setup(
         'lxml==4.6.2',
         'numpy==1.19.5',
         'packaging==20.8',
-        'pandas==1.2.0',
+        'pandas<=1.2.0',
         'pluggy==0.13.1',
         'py==1.10.0',
         'pyparsing==2.4.7',
