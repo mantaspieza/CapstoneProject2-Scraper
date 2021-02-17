@@ -5,6 +5,7 @@ setuptools.setup(
     author_email="pieza.mantas@gmail.com",
     description="Turing College 2.4 Capstone project",
     url="https://github.com/mantaspieza/CapstoneProject2-Scraper.git",
+    packages=setuptools.find_packages(),
     install_requires = [
         'atomicwrites==1.4.0',
         'attrs==20.3.0',
