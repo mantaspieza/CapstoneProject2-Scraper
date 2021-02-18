@@ -7,11 +7,11 @@ import numpy as np
 
 class Scraper:
 
-    def __init__(self, number_of_movies_per_category: int, title_of_csv_file: str):
+    def __init__(self):
         self.header = {'Turing-College-capstone-project-work': "Mozilla/5.0"}
         self.url_for_movie_categories = "https://www.imdb.com/feature/genre/?ref_=nv_ch_gr"
-        self.number_of_movies_per_category = number_of_movies_per_category
-        self.title_of_csv_file = title_of_csv_file
+        self.number_of_movies_per_category = 1
+        self.title_of_csv_file = "scraped_imdb_file"
         self.timeout = 2
 
     def get_url(self, url: str, header: dict) -> requests:
@@ -339,6 +339,9 @@ class Scraper:
 
         return self.create_dataframe_from_dictionary(scraped_info)
 
-    def scrape_IMDB(self, number_of_movies_per_category: int):
+    def scrape_IMDB(self, number_of_movies_per_category: int, name_of_csv_file: str):
+        self.number_of_movies_per_category = number_of_movies_per_category
+        self.title_of_csv_file = name_of_csv_file
         IMDB_DataFrame = self.collect_information()
         self.write_to_csv(IMDB_DataFrame, self.title_of_csv_file)
+        
