@@ -6,20 +6,47 @@ import numpy as np
 
 
 class Scraper:
+    """
+    A class which scrapes IMDB movie database.
+    ...
+    How does it work:
+    - Scrapes a list of all available categories on IMDB.com
+    - Creates a list of movie ID required to iterate through pages in the IMDB category.
+    - Scraper goes through every category in the list created before and the number pages required.
+    - Creates .csv file
 
-    def __init__(self):
-        self.header = {'Turing-College-capstone-project-work': "Mozilla/5.0"}
-        self.url_for_movie_categories = "https://www.imdb.com/feature/genre/?ref_=nv_ch_gr"
-        self.number_of_movies_per_category = 1
-        self.title_of_csv_file = "scraped_imdb_file"
-        self.timeout = 2
+    """
+    def __init__(self,
+                 id: str = 'Turing-College-capstone-project-work',
+                 web_browser: str = "Mozilla/5.0",
+                 url_for_movie_categories: str = "https://www.imdb.com/feature/genre/?ref_=nv_ch_gr",
+                 number_of_movies_per_category: int = 1,
+                 title_of_csv_file: str = "scraped_imdb_file",
+                 timeout: int = 2
+                 ):
+        """
+        Initialization
+
+        :param id: Id used to construct scraper headers.
+        :param web_browser: web browser information used to construct scraper headers.
+        :param url_for_movie_categories: Url used to collect movie categories for scraping.
+        :param number_of_movies_per_category: default is set to 1.
+        :param title_of_csv_file: Default "scraped_imdb_file"
+        :param timeout: Time duration between the page iteration not to spam IMDB server.
+        """
+        self.header = {id: web_browser}
+        self.url_for_movie_categories = url_for_movie_categories
+        self.number_of_movies_per_category = number_of_movies_per_category
+        self.title_of_csv_file = title_of_csv_file
+        self.timeout = timeout
 
     def get_url(self, url: str, header: dict) -> requests:
         """
+        Retrieves response from IMDB server.
 
-        :param url:
-        :param header:
-        :return:
+        :param url: desired url.
+        :param header: identification needed for scraping. constructed during Initialization.
+        :return: response. if connection blocked prints error message.
         """
 
         self.response = requests.get(url, headers=header)
@@ -30,12 +57,16 @@ class Scraper:
             return self.response
 
     def make_beautiful_soup(self) -> BeautifulSoup:
+        """
+        Takes the response and boils BeautifulSoup.
+        :return: BeautifulSoup.
+        """
         return BeautifulSoup(self.response.text, 'html.parser')
 
     def collect_movie_categories(self) -> list:
         """
-
-        :return:
+        Scrapes IMDB movie categories.
+        :return: list with all categories from IMDB.
         """
         self.get_url(url=self.url_for_movie_categories, header=self.header)
         soup = self.make_beautiful_soup()
@@ -46,8 +77,8 @@ class Scraper:
 
     def create_page_list(self) -> list:
         """
-
-        :return:
+        Creates a list with movie ID required to iterate through the IMDB pages.
+        :return: list containing required movie IDs
         """
         page_list = []
         for item in range(1, self.number_of_movies_per_category + 1, 50):
@@ -56,10 +87,12 @@ class Scraper:
 
     def scrape_one_page(self, category: str, page: int, timeout: float) -> BeautifulSoup:
         """
+        Takes the category and movie id from lists, updates the base url with this information and scrapes
+        the required information.
 
-        :param category:
-        :param page:
-        :param timeout:
+        :param category: category required to construct the URL for scraping
+        :param page: movie ID required to construct the URL for scraping.
+        :param timeout: Time duration between the page iteration not to spam IMDB server.
         :return:
         """
         time.sleep(timeout)
@@ -242,7 +275,7 @@ class Scraper:
         return dataframe
 
     @staticmethod
-    def write_to_csv(dataframe, title_of_csv_file: str):
+    def write_to_csv(dataframe, title_of_csv_file: str) -> None:
         """
         Creates a csv file.
 
@@ -298,8 +331,9 @@ class Scraper:
 
     def collect_information(self) -> pd.DataFrame:
         """
+        Function which combines all functions required for scraping.
 
-        :return:
+        :return: Pandas DataFrame.
         """
         title_list, page_list, year_list, certificate_list, runtime_list, \
         movie_genre_list, rating_list, metascore_list, total_votes_list, US_box_office_list, \
@@ -339,9 +373,16 @@ class Scraper:
 
         return self.create_dataframe_from_dictionary(scraped_info)
 
-    def scrape_IMDB(self, number_of_movies_per_category: int, name_of_csv_file: str):
+    def scrape_IMDB(self, number_of_movies_per_category: int, name_of_csv_file: str) -> None:
+        """
+        Function which is used to activate the scraper.
+
+        :param number_of_movies_per_category: desired number of movies per category to be scraped. default = 1
+        :param name_of_csv_file: desired name of csv file. default = "scraped_imdb_file"
+        :return: CSV file is created in project directory.
+        """
         self.number_of_movies_per_category = number_of_movies_per_category
         self.title_of_csv_file = name_of_csv_file
         IMDB_DataFrame = self.collect_information()
         self.write_to_csv(IMDB_DataFrame, self.title_of_csv_file)
-        
+
