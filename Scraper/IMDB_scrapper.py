@@ -7,7 +7,7 @@ import numpy as np
 
 class Scraper:
     """
-    A class which scrapes IMDB movie database.
+    A class which scrapes IMDB movie web page.
     ...
     How does it work:
     - Scrapes a list of all available categories on IMDB.com
@@ -16,14 +16,16 @@ class Scraper:
     - Creates .csv file
 
     """
-    def __init__(self,
-                 id: str = 'Turing-College-capstone-project-work',
-                 web_browser: str = "Mozilla/5.0",
-                 url_for_movie_categories: str = "https://www.imdb.com/feature/genre/?ref_=nv_ch_gr",
-                 number_of_movies_per_category: int = 1,
-                 title_of_csv_file: str = "scraped_imdb_file",
-                 timeout: int = 2
-                 ):
+
+    def __init__(
+        self,
+        id: str = "Turing-College-capstone-project-work",
+        web_browser: str = "Mozilla/5.0",
+        url_for_movie_categories: str = "https://www.imdb.com/feature/genre/?ref_=nv_ch_gr",
+        number_of_movies_per_category: int = 1,
+        title_of_csv_file: str = "scraped_imdb_file",
+        timeout: int = 2,
+    ):
         """
         Initialization
 
@@ -61,7 +63,7 @@ class Scraper:
         Takes the response and boils BeautifulSoup.
         :return: BeautifulSoup.
         """
-        return BeautifulSoup(self.response.text, 'html.parser')
+        return BeautifulSoup(self.response.text, "html.parser")
 
     def collect_movie_categories(self) -> list:
         """
@@ -71,9 +73,9 @@ class Scraper:
         self.get_url(url=self.url_for_movie_categories, header=self.header)
         soup = self.make_beautiful_soup()
 
-        all_categories = soup.find_all('div', class_="widget_image")
+        all_categories = soup.find_all("div", class_="widget_image")
 
-        return [movie_genre.find('img')['title'] for movie_genre in all_categories]
+        return [movie_genre.find("img")["title"] for movie_genre in all_categories]
 
     def create_page_list(self) -> list:
         """
@@ -85,7 +87,9 @@ class Scraper:
             page_list.append(item)
         return page_list
 
-    def scrape_one_page(self, category: str, page: int, timeout: float) -> BeautifulSoup:
+    def scrape_one_page(
+        self, category: str, page: int, timeout: float
+    ) -> BeautifulSoup:
         """
         Takes the category and movie id from lists, updates the base url with this information and scrapes
         the required information.
@@ -96,18 +100,20 @@ class Scraper:
         :return:
         """
         time.sleep(timeout)
-        print(f'Now scraping {category} movies from page starting with movie id {page}')
+        print(f"Now scraping {category} movies from page starting with movie id {page}")
 
-        url = f'https://www.imdb.com/search/title/?genres={category}&sort=boxoffice_gross_us,desc&start={page}&explore=title_type,genres&ref_=adv_nxt'
+        url = f"https://www.imdb.com/search/title/?genres={category}&sort=boxoffice_gross_us,desc&start={page}&explore=title_type,genres&ref_=adv_nxt"
         self.get_url(url=url, header=self.header)
         soup = self.make_beautiful_soup()
 
-        all_movies_on_page = soup.find_all('div', class_="lister-item")
+        all_movies_on_page = soup.find_all("div", class_="lister-item")
 
         return all_movies_on_page
 
     @staticmethod
-    def get_movie_title(movie_info: BeautifulSoup, list_to_collect_titles: list) -> str or None:
+    def get_movie_title(
+        movie_info: BeautifulSoup, list_to_collect_titles: list
+    ) -> str or None:
         """
         Function which gathers movie title from the provided BeautifulSoup object.
 
@@ -117,13 +123,15 @@ class Scraper:
         """
 
         try:
-            title = movie_info.find('span', class_='lister-item-index').find_next().text
+            title = movie_info.find("span", class_="lister-item-index").find_next().text
             return list_to_collect_titles.append(str(title))
         except:
             return list_to_collect_titles.append(np.nan)
 
     @staticmethod
-    def get_movie_year(movie_info: BeautifulSoup, list_to_collect_movie_year: list) -> int or None:
+    def get_movie_year(
+        movie_info: BeautifulSoup, list_to_collect_movie_year: list
+    ) -> int or None:
         """
         Function which gathers movie release year from the provided BeautifulSoup info.
 
@@ -132,13 +140,15 @@ class Scraper:
         :return: appends the movie release year to selected list. If not provided None is returned.
         """
         try:
-            year = movie_info.find('span', class_="lister-item-year").text[1:5]
+            year = movie_info.find("span", class_="lister-item-year").text[1:5]
             return list_to_collect_movie_year.append(int(year))
         except:
             return list_to_collect_movie_year.append(np.nan)
 
     @staticmethod
-    def get_movie_certificate(movie_info: BeautifulSoup, list_to_store_certificate: list) -> str or None:
+    def get_movie_certificate(
+        movie_info: BeautifulSoup, list_to_store_certificate: list
+    ) -> str or None:
         """
         Function which gathers movie certificate(age restrictions) from provided BeautifulSoup info.
 
@@ -147,13 +157,15 @@ class Scraper:
         :return: appends the movie certificate to selected list. If not provided None is returned.
         """
         try:
-            certificate = movie_info.find('span', class_="certificate").text
+            certificate = movie_info.find("span", class_="certificate").text
             return list_to_store_certificate.append(str(certificate))
         except:
             return list_to_store_certificate.append(np.nan)
 
     @staticmethod
-    def get_movie_runtime(movie_info: BeautifulSoup, list_to_store_runtime: list) -> str or None:
+    def get_movie_runtime(
+        movie_info: BeautifulSoup, list_to_store_runtime: list
+    ) -> str or None:
         """
         Function which gathers runtime of the movie from provided BeautifulSoup info.
 
@@ -162,13 +174,15 @@ class Scraper:
         :return: appends the runtime of the movie to selected list. If not provided None is returned.
         """
         try:
-            runtime = movie_info.find('span', class_="runtime").text
+            runtime = movie_info.find("span", class_="runtime").text
             return list_to_store_runtime.append(str(runtime))
         except:
             return list_to_store_runtime.append(np.nan)
 
     @staticmethod
-    def get_movie_genres(movie_info: BeautifulSoup, list_to_store_genres: list) -> str or None:
+    def get_movie_genres(
+        movie_info: BeautifulSoup, list_to_store_genres: list
+    ) -> str or None:
         """
         Function which gathers associated movie genres from provided BeautifulSoup info.
 
@@ -177,13 +191,15 @@ class Scraper:
         :return: appends the associated movie genres to the selected list. If not provided None is returned.
         """
         try:
-            movie_genres = movie_info.find('span', class_="genre").text.rstrip()[1:]
+            movie_genres = movie_info.find("span", class_="genre").text.rstrip()[1:]
             return list_to_store_genres.append(str(movie_genres))
         except:
             return list_to_store_genres.append(np.nan)
 
     @staticmethod
-    def get_movie_rating(movie_info: BeautifulSoup, list_to_store_rating: list) -> float or None:
+    def get_movie_rating(
+        movie_info: BeautifulSoup, list_to_store_rating: list
+    ) -> float or None:
         """
         Function which gathers movie IMDB rating from provided BeautifulSoup info.
 
@@ -192,13 +208,17 @@ class Scraper:
         :return: appends the IMDB rating to the selected list. If not provided None is returned.
         """
         try:
-            rating = movie_info.find('div', class_="inline-block ratings-imdb-rating")['data-value']
+            rating = movie_info.find("div", class_="inline-block ratings-imdb-rating")[
+                "data-value"
+            ]
             return list_to_store_rating.append(float(rating))
         except:
             return list_to_store_rating.append(np.nan)
 
     @staticmethod
-    def get_movie_metascore(movie_info: BeautifulSoup, list_to_store_metascore: list) -> int or None:
+    def get_movie_metascore(
+        movie_info: BeautifulSoup, list_to_store_metascore: list
+    ) -> int or None:
         """
         Function which gathers movie Metascore rating from provided BeautifulSoup info.
 
@@ -207,13 +227,15 @@ class Scraper:
         :return: appends Metascore rating to the selected list. If not provided None is returned.
         """
         try:
-            metascore = movie_info.find('span', class_="metascore").text.rstrip()
+            metascore = movie_info.find("span", class_="metascore").text.rstrip()
             return list_to_store_metascore.append(int(metascore))
         except:
             return list_to_store_metascore.append(np.nan)
 
     @staticmethod
-    def get_movie_votes(movie_info: BeautifulSoup, list_to_store_votes: list) -> int or None:
+    def get_movie_votes(
+        movie_info: BeautifulSoup, list_to_store_votes: list
+    ) -> int or None:
         """
         Function which gathers the number of votes from provided BeautifulSoup info.
 
@@ -222,13 +244,17 @@ class Scraper:
         :return: appends the number of votes to the selected list. If not provided None is returned.
         """
         try:
-            total_votes = movie_info.find('p', class_="sort-num_votes-visible").findChildren('span')[1]['data-value']
+            total_votes = movie_info.find(
+                "p", class_="sort-num_votes-visible"
+            ).findChildren("span")[1]["data-value"]
             return list_to_store_votes.append(int(total_votes))
         except:
             return list_to_store_votes.append(np.nan)
 
     @staticmethod
-    def get_movie_box_office(movie_info: BeautifulSoup, list_to_store_box_office: list) -> int or None:
+    def get_movie_box_office(
+        movie_info: BeautifulSoup, list_to_store_box_office: list
+    ) -> int or None:
         """
         Function which gathers US box office earnings from provided BeautifulSoup info.
 
@@ -238,14 +264,19 @@ class Scraper:
 
         """
         try:
-            box_office = movie_info.find('p', class_="sort-num_votes-visible").findChildren('span')[4][
-                'data-value'].replace(',', '')
+            box_office = (
+                movie_info.find("p", class_="sort-num_votes-visible")
+                .findChildren("span")[4]["data-value"]
+                .replace(",", "")
+            )
             return list_to_store_box_office.append(int(box_office))
         except:
             return list_to_store_box_office.append(np.nan)
 
     @staticmethod
-    def get_movie_category(category: str, list_to_store_categories: list) -> str or None:
+    def get_movie_category(
+        category: str, list_to_store_categories: list
+    ) -> str or None:
         """
         Function which takes the movie category and appends it to the list.
 
@@ -268,7 +299,7 @@ class Scraper:
         """
         # To avoid errors:
         # If scraped results are in unequal lengths replaces missing values with None.
-        dataframe = pd.DataFrame.from_dict(dictionary, orient='index')
+        dataframe = pd.DataFrame.from_dict(dictionary, orient="index")
         dataframe = dataframe.transpose()
 
         print(" >> Scrapping finished successfully << ")
@@ -285,19 +316,23 @@ class Scraper:
         """
 
         print(" >> Your csv file was created successfully << ")
-        return dataframe.to_csv(f'{title_of_csv_file}.csv', index=None, header=True, na_rep=np.nan)
+        return dataframe.to_csv(
+            f"{title_of_csv_file}.csv", index=None, header=True, na_rep=np.nan
+        )
 
     @staticmethod
-    def create_dictionary_for_movies(title: list,
-                                     release_year: list,
-                                     certificate: list,
-                                     runtime: list,
-                                     genres: list,
-                                     category: list,
-                                     rating: list,
-                                     metascore: list,
-                                     votes: list,
-                                     box_office: list) -> dict:
+    def create_dictionary_for_movies(
+        title: list,
+        release_year: list,
+        certificate: list,
+        runtime: list,
+        genres: list,
+        category: list,
+        rating: list,
+        metascore: list,
+        votes: list,
+        box_office: list,
+    ) -> dict:
         """
         Creates dictionary from the gathered movie information.
 
@@ -314,7 +349,6 @@ class Scraper:
         :return: dictionary containing all provided information.
         """
         dictionary_containing_all_scrapped_info = {
-
             "title": title,
             "year": release_year,
             "certificate": certificate,
@@ -324,7 +358,7 @@ class Scraper:
             "rating": rating,
             "metascore": metascore,
             "total_votes": votes,
-            "US_box_office": box_office
+            "US_box_office": box_office,
         }
 
         return dictionary_containing_all_scrapped_info
@@ -335,9 +369,19 @@ class Scraper:
 
         :return: Pandas DataFrame.
         """
-        title_list, page_list, year_list, certificate_list, runtime_list, \
-        movie_genre_list, rating_list, metascore_list, total_votes_list, US_box_office_list, \
-        category_list = ([] for i in range(11))
+        (
+            title_list,
+            page_list,
+            year_list,
+            certificate_list,
+            runtime_list,
+            movie_genre_list,
+            rating_list,
+            metascore_list,
+            total_votes_list,
+            US_box_office_list,
+            category_list,
+        ) = ([] for i in range(11))
 
         main_category_list = self.collect_movie_categories()
         page_list = self.create_page_list()
@@ -346,34 +390,60 @@ class Scraper:
 
             for page in page_list:
 
-                all_movies_on_page = self.scrape_one_page(page=page, category=genre, timeout=self.timeout)
+                all_movies_on_page = self.scrape_one_page(
+                    page=page, category=genre, timeout=self.timeout
+                )
 
                 for movie in all_movies_on_page:
-                    self.get_movie_title(movie_info=movie, list_to_collect_titles=title_list)
-                    self.get_movie_year(movie_info=movie, list_to_collect_movie_year=year_list)
-                    self.get_movie_certificate(movie_info=movie, list_to_store_certificate=certificate_list)
-                    self.get_movie_runtime(movie_info=movie, list_to_store_runtime=runtime_list)
-                    self.get_movie_genres(movie_info=movie, list_to_store_genres=movie_genre_list)
-                    self.get_movie_rating(movie_info=movie, list_to_store_rating=rating_list)
-                    self.get_movie_metascore(movie_info=movie, list_to_store_metascore=metascore_list)
-                    self.get_movie_votes(movie_info=movie, list_to_store_votes=total_votes_list)
-                    self.get_movie_category(category=genre, list_to_store_categories=category_list)
-                    self.get_movie_box_office(movie_info=movie, list_to_store_box_office=US_box_office_list)
+                    self.get_movie_title(
+                        movie_info=movie, list_to_collect_titles=title_list
+                    )
+                    self.get_movie_year(
+                        movie_info=movie, list_to_collect_movie_year=year_list
+                    )
+                    self.get_movie_certificate(
+                        movie_info=movie, list_to_store_certificate=certificate_list
+                    )
+                    self.get_movie_runtime(
+                        movie_info=movie, list_to_store_runtime=runtime_list
+                    )
+                    self.get_movie_genres(
+                        movie_info=movie, list_to_store_genres=movie_genre_list
+                    )
+                    self.get_movie_rating(
+                        movie_info=movie, list_to_store_rating=rating_list
+                    )
+                    self.get_movie_metascore(
+                        movie_info=movie, list_to_store_metascore=metascore_list
+                    )
+                    self.get_movie_votes(
+                        movie_info=movie, list_to_store_votes=total_votes_list
+                    )
+                    self.get_movie_category(
+                        category=genre, list_to_store_categories=category_list
+                    )
+                    self.get_movie_box_office(
+                        movie_info=movie, list_to_store_box_office=US_box_office_list
+                    )
 
-        scraped_info = self.create_dictionary_for_movies(title=title_list,
-                                                         release_year=year_list,
-                                                         certificate=certificate_list,
-                                                         runtime=runtime_list,
-                                                         genres=movie_genre_list,
-                                                         category=category_list,
-                                                         rating=rating_list,
-                                                         metascore=metascore_list,
-                                                         votes=total_votes_list,
-                                                         box_office=US_box_office_list)
+        scraped_info = self.create_dictionary_for_movies(
+            title=title_list,
+            release_year=year_list,
+            certificate=certificate_list,
+            runtime=runtime_list,
+            genres=movie_genre_list,
+            category=category_list,
+            rating=rating_list,
+            metascore=metascore_list,
+            votes=total_votes_list,
+            box_office=US_box_office_list,
+        )
 
         return self.create_dataframe_from_dictionary(scraped_info)
 
-    def scrape_IMDB(self, number_of_movies_per_category: int, name_of_csv_file: str) -> None:
+    def scrape_IMDB(
+        self, number_of_movies_per_category: int, name_of_csv_file: str
+    ) -> None:
         """
         Function which is used to activate the scraper.
 
@@ -383,6 +453,4 @@ class Scraper:
         """
         self.number_of_movies_per_category = number_of_movies_per_category
         self.title_of_csv_file = name_of_csv_file
-        IMDB_DataFrame = self.collect_information()
-        self.write_to_csv(IMDB_DataFrame, self.title_of_csv_file)
-
+        self.write_to_csv(self.collect_information(), self.title_of_csv_file)
