@@ -60,7 +60,7 @@ To install calculator to your device:
 #### How to use calculator on your device:   
 
 `python3`  
-`from Scraper.IMDB_scrapper import Scraper`  
+`from scraper.IMDB_scrapper import Scraper`  
 `scraper = Scraper()`
 
 Enter minimum desired number of movies to be scraped per category. (Note: each page contains 50 movies, therefore if 52 requested, the scraper will collect 100 movies per genre).  
