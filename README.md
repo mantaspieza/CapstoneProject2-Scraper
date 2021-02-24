@@ -54,7 +54,7 @@ To check whether pip is installed type this:
 
 To install calculator to your device:  
 
-`! pip install git+https://github.com/mantaspieza/IMDB_Movie_Scraper.git`
+`pip install git+https://github.com/mantaspieza/IMDB_Movie_Scraper.git`
 
 
 #### How to use calculator on your device:   
