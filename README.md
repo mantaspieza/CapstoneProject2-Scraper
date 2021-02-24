@@ -49,7 +49,7 @@ For more information just type help(Scraper)
 ## You can install it on your device  
 #### note:    
 You must have [pip](https://github.com/pypa/pip) installed on your device. follow the link for more information.    
-To check whether pip is inslled type this:  
+To check whether pip is installed type this:  
 `pip --version`  
 
 To install calculator to your device:  
