@@ -29,18 +29,21 @@ And collects information about each listed movie in the category:
 #### You can easily run it in google colabs:  
 
 `! pip install git+https://github.com/mantaspieza/IMDB_Movie_Scraper.git`  
-`from Scraper.IMDB_scrapper import Scraper`
-`scraper = Scraper()`
-
+`from Scraper.IMDB_scrapper import Scraper`  
+`scraper = Scraper()`  
+  
 To start scraping just run the command:   
 `scraper.scrape_IMDB()`
 
-Scraper will scrape first 50 movies from each category collected from the page.
-You can also input the desired number of movies to be scraped into scrape_IMDB function. (Note: each page contains 50 movies, therefore if 52 requested, the scraper will collect 100 movies per genre).
+Enter minimum desired number of movies to be scraped per category. (Note: each page contains 50 movies, therefore if 52 requested, the scraper will collect 100 movies per genre).  
+Enter desired name for the .csv file.
 
-After scraping is complete, you will be provided with .csv file containing the scraped information. It is possible to input your .csv file name into scrape_IMDB function. (Default name: scraped_imdb_file.csv)
+After scraping is complete, you will be provided with .csv file containing the scraped information.  
+`Example:`  
+``scraper.scrape_IMDB(number_of_movies_per_category=1,
+                    name_of_csv_file='scraped_imdb')``
 
-for more information just type help(Scraper)
+For more information just type help(Scraper)
 
 
 ## You can install it on your device  
@@ -60,8 +63,13 @@ To install calculator to your device:
 `from Scraper.IMDB_scrapper import Scraper`
 `scraper = Scraper()`
 
-To start scraping just run the command:   
-`scraper.scrape_IMDB()`
+Enter minimum desired number of movies to be scraped per category. (Note: each page contains 50 movies, therefore if 52 requested, the scraper will collect 100 movies per genre).  
+Enter desired name for the .csv file.
+
+After scraping is complete, you will be provided with .csv file containing the scraped information.  
+`Example:`  
+``scraper.scrape_IMDB(number_of_movies_per_category=1,
+                    name_of_csv_file='scraped_imdb')``
 
 
 
