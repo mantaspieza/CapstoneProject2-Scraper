@@ -1,5 +1,3 @@
-##Introduction
-
 ### Problem Description
 
 As a person who enjoys movies i am always curious to know how much money would a movie make. I believe i share this curiousity together with other movie enthusiasts. It would be great to know it right?
