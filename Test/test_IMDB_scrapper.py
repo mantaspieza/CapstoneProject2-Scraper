@@ -1,4 +1,4 @@
-from IMDB_scraper.IMDB_scrapper_class import Scraper
+from Scraper.IMDB_scrapper import Scraper
 from bs4 import BeautifulSoup
 import pandas as pd
 
