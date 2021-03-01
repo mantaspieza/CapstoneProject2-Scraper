@@ -35,47 +35,20 @@ And collects information about each listed movie in the category:
 #### You can easily run it in google colabs:  
 
 `! pip install git+https://github.com/mantaspieza/IMDB_Movie_Scraper.git`  
-`from Scraper.IMDB_scrapper import Scraper`  
+`from scraper.scrape_imdb import Scraper`  
 `scraper = Scraper()`  
   
 To start scraping just run the command:   
-`scraper.scrape_IMDB()`
+`scraper.scrape_imdb()`
 
 Enter minimum desired number of movies to be scraped per category. (Note: each page contains 50 movies, therefore if 52 requested, the scraper will collect 100 movies per genre).  
 Enter desired name for the .csv file.
 
 After scraping is complete, you will be provided with .csv file containing the scraped information.  
 `Example:`  
-``scraper.scrape_IMDB(number_of_movies_per_category=1,
+``scraper.scrape_imdb(number_of_movies_per_category=1,
                     name_of_csv_file='scraped_imdb')``
 
 For more information just type help(Scraper)
-
-
-## You can install it on your device  
-#### note:    
-You must have [pip](https://github.com/pypa/pip) installed on your device. follow the link for more information.    
-To check whether pip is installed type this:  
-`pip --version`  
-
-To install calculator to your device:  
-
-`pip install git+https://github.com/mantaspieza/IMDB_Movie_Scraper.git`
-
-
-#### How to use calculator on your device:   
-
-`python3`  
-`from scraper.IMDB_scrapper import Scraper`  
-`scraper = Scraper()`
-
-Enter minimum desired number of movies to be scraped per category. (Note: each page contains 50 movies, therefore if 52 requested, the scraper will collect 100 movies per genre).  
-Enter desired name for the .csv file.
-
-After scraping is complete, you will be provided with .csv file containing the scraped information.  
-`Example:`  
-``scraper.scrape_IMDB(number_of_movies_per_category=1,
-                    name_of_csv_file='scraped_imdb')``
-
 
 
